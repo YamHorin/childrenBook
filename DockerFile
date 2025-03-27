@@ -1,0 +1,10 @@
+FROM python:3.11
+
+WORKDIR /ChildrenBookServer
+
+RUN pip install ollama
+RUN pip install transformers
+RUN pip install diffusers transformers accelerate
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+CMD ["python" , "./app/app.py"]
