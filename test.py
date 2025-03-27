@@ -1,4 +1,3 @@
-apiKey = "AIzaSyCAAhs4cAfwBaHyYfGXkBLi5dhejHOPQtI"
 
 import google.generativeai as genai
 
