@@ -2,9 +2,20 @@ FROM python:3.11
 
 WORKDIR /ChildrenBookServer
 
-RUN pip install ollama
-RUN pip install transformers
+RUN pip install Flask
+RUN pip install sentencepiece
+RUN pip install -U "huggingface_hub[cli]"
+RUN pip install flask-cors
+RUN pip install python-dotenv
+RUN pip install requests
 RUN pip install diffusers transformers accelerate
-RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+RUN pip install -U google-generativeai
+RUN pip install hf_xet
 
-CMD ["python" , "./app/app.py"]
+# Copy application files into the container
+COPY . .
+
+EXPOSE 5000
+
+CMD ["python" , "./app.py"]

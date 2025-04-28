@@ -1,0 +1,13 @@
+Flask
+sentencepiece
+huggingface_hub[cli]
+flask-cors
+requests
+diffusers
+transformers
+accelerate
+torch torchvision  --index-url https://download.pytorch.org/whl/cu124
+google-generativeai
+hf_xet
+bitsandbytes
+python-dotenv
