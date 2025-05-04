@@ -14,15 +14,15 @@ def makeTextAI(promt):
         
 #test
 
-subject = "dogs and cats"
-numPages = 3
-message = f'''
-You are currently a children's writer who is required to write a children's book about {subject}
-You are required to write {numPages} pages with each page no more than 100 words
-Return the respond as follow:
-Page 1: Text of page 1
-Page 2: Text of page 2
-And so on
+# subject = "dogs and cats"
+# numPages = 3
+# message = f'''
+# You are currently a children's writer who is required to write a children's book about {subject}
+# You are required to write {numPages} pages with each page no more than 100 words
+# Return the respond as follow:
+# Page 1: Text of page 1
+# Page 2: Text of page 2
+# And so on
 
-'''
-print(makeTextAI(message))
+# '''
+# print(makeTextAI(message))
