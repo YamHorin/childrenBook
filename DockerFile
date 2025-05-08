@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime
 
 WORKDIR /ChildrenBookServer
 
@@ -8,14 +8,13 @@ RUN pip install -U "huggingface_hub[cli]"
 RUN pip install flask-cors
 RUN pip install python-dotenv
 RUN pip install requests
-RUN pip install diffusers transformers accelerate
-RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 RUN pip install -U google-generativeai
 RUN pip install hf_xet
+RUN pip install diffusers transformers accelerate
 
 # Copy application files into the container
 COPY . .
 
 EXPOSE 5000
 
-CMD ["python" , "./app.py"]
+CMD ["python", "./app.py"]

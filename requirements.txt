@@ -11,3 +11,4 @@ google-generativeai
 hf_xet
 bitsandbytes
 python-dotenv
+gtts

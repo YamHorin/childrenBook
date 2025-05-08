@@ -4,8 +4,11 @@ __pycache__/
 *.pyc
 .server/env
 
-*.env
+*.mp3
+*.png
 
+*.env
+commands.txt
 /.vscode/
 *.png
 /.vscode/

@@ -8,6 +8,9 @@ app = Flask(__name__)
 staticNumIdPic =0
 
 
+@app.route('/MagicOfStory/test',methods=['POST' , 'GET'] )
+def test():
+    return "hello world"
 
 
 @app.route('/MagicOfStory/Image',methods=['POST' , 'GET'] )
@@ -32,6 +35,7 @@ def create_new_AI_image():
 
     except KeyError:
         return jsonify({"error": "one the values in the JSON is missing"}), 400  # Handle missing JSON
+
 @app.route('/MagicOfStory/ImageAI',methods=['POST'] )    
 def create_AI_Image_story_text():
     global staticNumIdPic
@@ -86,7 +90,32 @@ def create_new_story():
         auther = str(data["auther"])
         description = str(data["description"])
         title = str(data["title"])
-        story_obj = child.Story(subject,numPages,auther,description,title ,staticNumIdPic)
+        enable_voice = bool(data["text_to_voice"])
+        story_obj = child.Story(subject,numPages,auther,description,title ,staticNumIdPic ,make_voice=enable_voice)
+        staticNumIdPic+=numPages
+        return jsonify(story_obj.to_dict())
+
+
+    except KeyError:
+        return jsonify({"error": "one the values in the JSON is missing"}), 400  # Handle missing JSON
+
+
+@app.route('/MagicOfStory/Story/Sequel',methods=['POST'])
+def create_new_story_sequel():
+    global staticNumIdPic
+    data = request.get_json()  # Get JSON data from the request body
+    if not data:
+        return jsonify({"error": "No JSON data provided"}), 400  # Handle missing JSON
+    try:
+        numPages = int(data["numPages"])
+        auther = str(data["auther"])
+        description = str(data["description"])
+        title = str(data["title"])
+        enable_voice = bool(data["text_to_voice"])
+        pages_previous = list(data["pages_previous"])
+        title_previous = str(data["title_previous"])
+
+        story_obj = child.Continued_story(numPages,auther,description,title ,staticNumIdPic,pages_previous,title_previous ,make_voice=enable_voice)
         staticNumIdPic+=numPages
         return jsonify(story_obj.to_dict())
 
@@ -94,5 +123,6 @@ def create_new_story():
     except KeyError:
         return jsonify({"error": "one the values in the JSON is missing"}), 400  # Handle missing JSON
  
+
 if __name__ == "__main__":
     app.run(debug=True , port=5000 , host="0.0.0.0")
