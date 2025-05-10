@@ -57,15 +57,15 @@ class Story():
             self.title =t.makeTextAI(f"give me a title for children book with a description of {description} {extra_promt}")
 
         story = t.makeTextAI(f'''
-    You are currently a children's writer who is required to write a children's book about {subject}
-    You are required to write {numPages} pages with each page no more than 30 words
-    Return the respond as follow:
-    Page 1: Text of page 1
-    Page 2: Text of page 2
-    And so on
-    ''')
+You are currently a children's writer who is required to write a children's book about {subject}
+You are required to write {numPages} pages with each page no more than 150 words
+Return the respond as follow:
+Page 1: Text of page 1
+Page 2: Text of page 2
+And so on
+''')
             
-        print (f"story  = {story}")
+        print (f"story  {story}")
         pages_text = storyTextSplit(story)    
         
         for i in range(numPages):
@@ -137,7 +137,7 @@ class Continued_story(Story):
         story = t.makeTextAI(f'''
     You are currently a children's writer who is required to write a children's book 
     You are making a sequel story, here is the text of the previous story: {previous_book_story}
-    You are required to write {numPages} pages with each page no more than 30 words
+    You are required to write {numPages} pages with each page no more than 150 words
     Return the respond as follow:
     Page 1: Text of page 1
     Page 2: Text of page 2
