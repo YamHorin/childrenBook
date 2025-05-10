@@ -10,19 +10,19 @@ def save_file(file_name:str, fileType:fileType):
 
 
     bucket = storage.bucket()
-
+    url = ''
     # Upload file
-    if fileType.value == fileType.mp3:
+    if fileType.value == fileType.mp3.value:
         blob = bucket.blob(f"voice stories/{file_name}")  # or "images/photo.png"
         blob.upload_from_filename(file_name)
-    elif fileType.value == fileType.png:
+        blob.make_public()
+        url = blob.public_url
+    elif fileType.value == fileType.png.value:
         blob = bucket.blob(f"Images/{file_name}")  # or "images/photo.png"
         blob.upload_from_filename(file_name)
-    # Make file public
-    blob.make_public()
+        blob.make_public()
+        url = blob.public_url
 
-    url = blob.public_url
-    # Get public URL
     print("Public URL:", url)
     return url
 

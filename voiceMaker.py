@@ -14,9 +14,9 @@ def newVoiceFile(text_voice ,file_name, slow_voice = False):
     # Saving the converted audio in a mp3 file 
     if ('mp3' not in file_name):
         file_name = f"{file_name}.mp3"
-    myobj.save(f"{file_name}.mp3")
+    myobj.save(f"{file_name}")
     print(f"voice file saved as {file_name}")
-    memoryManager.save_file(file_name , fileType.mp3)
-    return file_name
+    return memoryManager.save_file(file_name , fileType.mp3)
+     
 
 

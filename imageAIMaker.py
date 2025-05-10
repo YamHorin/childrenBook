@@ -24,8 +24,8 @@ def makeImageAI(prompt, steps, height, width, idPictuere):
     image = image.filter(ImageFilter.DETAIL)
     image.save(fileName)
     print(f"image saved as {fileName}")
-    memoryManager.save_file(fileName ,fileType.png)
-    return fileName
+    return memoryManager.save_file(fileName ,fileType.png)
+     
 
 
 def makeImageFromImage(prompt, steps, height, width, idPictuere , url_image_source):
@@ -47,8 +47,8 @@ def makeImageFromImage(prompt, steps, height, width, idPictuere , url_image_sour
     image = image.filter(ImageFilter.DETAIL)
     image.save(fileName)
     print(f"image saved as {fileName}")
-    memoryManager.save_file(fileName ,fileType.png)
-    return fileName
+    return memoryManager.save_file(fileName ,fileType.png)
+     
 
 
 

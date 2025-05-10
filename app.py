@@ -1,8 +1,9 @@
 from flask import Flask  , request , url_for , jsonify , send_file
-from qualityEnum import imageQuality
+from qualityEnum import imageQuality 
 from textMaker import makeTextAI
 import childrenStoryMaker as child
 import imageAIMaker 
+import voiceMaker
 app = Flask(__name__)
 
 staticNumIdPic =0
@@ -122,7 +123,22 @@ def create_new_story_sequel():
 
     except KeyError:
         return jsonify({"error": "one the values in the JSON is missing"}), 400  # Handle missing JSON
- 
+
+@app.route('/MagicOfStory/voice',methods=['POST']) 
+def make_new_text_to_speach():
+    data = request.get_json()  # Get JSON data from the request body
+    if not data:
+        return jsonify({"error": "No JSON data provided"}), 400  # Handle missing JSON
+    try:
+        text = str(data["text_page"])
+        story = str(data["story_title"])
+        url_file  = voiceMaker.newVoiceFile(text , f"{story}.mp3")
+        return jsonify({"url": url_file})
+
+
+    except KeyError:
+        return jsonify({"error": "one the values in the JSON is missing"}), 400  # Handle missing JSON
+
 
 if __name__ == "__main__":
     app.run(debug=True , port=5000 , host="0.0.0.0")
