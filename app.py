@@ -4,6 +4,7 @@ from textMaker import makeTextAI
 import childrenStoryMaker as child
 import imageAIMaker 
 import voiceMaker
+from memoryManager import initialize_app
 app = Flask(__name__)
 
 staticNumIdPic =0
@@ -141,4 +142,5 @@ def make_new_text_to_speach():
 
 
 if __name__ == "__main__":
+    initialize_app()
     app.run(debug=True , port=5000 , host="0.0.0.0")

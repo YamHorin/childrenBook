@@ -66,14 +66,24 @@ And so on
 ''')
             
         print (f"story  {story}")
-        pages_text = storyTextSplit(story)    
+        pages_text = storyTextSplit(story) 
+        steps  =imageQuality[quality_images].value 
+        # prompts = []   
+        # for j in range(numPages):
+        #     inputText = f'make an image ai promt for children story according to this text {pages_text[i]}'
+        #     prompts.append(t.makeTextAI(inputText))
         
+        # images_urls = imageAIMaker.make_mutiple_ai_images(prompts , steps , height_images , width_images , staticNumIdPic)
+
+        
+
         for i in range(numPages):
 
-            steps  =imageQuality[quality_images].value 
-
-            inputText = f'make an image ai promt for children story according to this text {pages_text[i]}'
+            inputText = f'make an image ai promt for children story according to this text not longer then 15 words {pages_text[i]}'
             inputText = t.makeTextAI(inputText)
+            while (len(inputText )>100):
+                inputText = f'make an image ai promt for children story according to this text not longer then 15 words {pages_text[i]}'
+                inputText = t.makeTextAI(inputText)
             pathImage = imageAIMaker.makeImageAI(inputText , steps , height_images  , width_images , staticNumIdPic)
             staticNumIdPic+=1
             voice_file_url =None
