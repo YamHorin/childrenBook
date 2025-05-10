@@ -3,7 +3,8 @@ from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
 from PIL import ImageFilter
 from diffusers import AutoPipelineForImage2Image
 from diffusers.utils import load_image
-
+import memoryManager
+from qualityEnum import fileType
 
 def makeImageAI(prompt, steps, height, width, idPictuere):
     model_id = "stabilityai/stable-diffusion-2"
@@ -23,6 +24,7 @@ def makeImageAI(prompt, steps, height, width, idPictuere):
     image = image.filter(ImageFilter.DETAIL)
     image.save(fileName)
     print(f"image saved as {fileName}")
+    memoryManager.save_file(fileName ,fileType.png)
     return fileName
 
 
@@ -45,6 +47,7 @@ def makeImageFromImage(prompt, steps, height, width, idPictuere , url_image_sour
     image = image.filter(ImageFilter.DETAIL)
     image.save(fileName)
     print(f"image saved as {fileName}")
+    memoryManager.save_file(fileName ,fileType.png)
     return fileName
 
 

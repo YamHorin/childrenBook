@@ -12,3 +12,4 @@ hf_xet
 bitsandbytes
 python-dotenv
 gtts
+firebase_admin
