@@ -41,9 +41,78 @@ class page():
 
 
 class Story():
-    def __init__(self , subject , numPages , auther , description , title ,
-                  staticNumIdPic,height_images = 1080 , width_images = 1080 , 
-                  quality_images = 'MEDIUM',make_voice = True):
+
+    def __init__(
+        self,
+        subject: str,
+        numPages: int,
+        auther: str,
+        description: str,
+        title: str,
+        pages_texts_list:  list |None,
+        make_voice: bool):
+        
+        # no text inclued = complete AI story
+        if pages_texts_list is None:
+           (self.numPages,self.description,self.auther,self.pages,self.title) = self.AI_story_maker(subject,numPages,auther,description,title,make_voice)
+        elif pages_texts_list is list:
+            (self.numPages,self.description,self.auther,self.title,self.pages) = self.story_media_maker(subject,numPages,auther,description,title,make_voice,pages_texts_list)
+        print("story has been complete \n\n")
+
+    def story_media_maker(
+            self ,
+            subject: str,
+            numPages: int,
+            auther: str,
+            description: str,
+            title: str,
+            make_voice : bool,
+            pages_texts_list : list):
+        
+        self.numPages = numPages
+        self.description = description
+        self.auther =auther
+        extra_promt = " , just print the answer"
+        self.pages = []
+        if title!= '':
+            self.title = title
+        else:
+            self.title =t.makeTextAI(f"give me a title for children book with a description of {description} {extra_promt}")
+        #no rellevant: move from  stable diffusion to gemini
+        #steps  =imageQuality[quality_images].value 
+        #save value of the first image to base the rest of the images on that
+        url_first_image =''
+        for i in range(numPages):
+
+            inputText = f'make an image prompt for children story according to this text not longer then 15 words {pages_texts_list[i]} , the subject of the story :{subject}'
+            inputText = t.makeTextAI(inputText)
+            while (len(inputText )>50):
+                inputText = f'make an image ai prompt for children story according to this text not longer then 15 words {pages_texts_list[i]} , the subject of the story :{subject}'
+                inputText = t.makeTextAI(inputText)
+            pathImage = None
+            if i==0:
+                pathImage = imageAIMaker.makeImageAI(inputText)
+                url_first_image = str(pathImage)
+            else:
+                pathImage = imageAIMaker.makeImageFromImage(inputText ,url_first_image)
+            #no rellevant: move from  stable diffusion to gemini
+            #pathImage = imageAIMaker.makeImageAI(inputText , steps , height_images  , width_images , staticNumIdPic)
+            #staticNumIdPic+=1
+            voice_file_url = None
+            if make_voice:
+                voice_file_url = newVoiceFile(pages_texts_list[i],f"{title}_page{i}_voice")
+            self.pages.append(page(pages_texts_list[i] , pathImage,voice_file_url)) 
+
+        
+
+    def AI_story_maker(
+            self ,
+            subject: str,
+            numPages: int,
+            auther: str,
+            description: str,
+            title: str,
+            make_voice : bool):
         
         self.numPages = numPages
         self.description = description
@@ -57,40 +126,46 @@ class Story():
             self.title =t.makeTextAI(f"give me a title for children book with a description of {description} {extra_promt}")
 
         story = t.makeTextAI(f'''
-You are currently a children's writer who is required to write a children's book about {subject}
-You are required to write {numPages} pages with each page no more than 150 words
-Return the respond as follow:
-Page 1: Text of page 1
-Page 2: Text of page 2
-And so on
-''')
+    You are currently a children's writer who is required to write a children's book about {subject}
+    You are required to write {numPages} pages with each page no more than 150 words
+    Return the respond as follow:
+    Page 1: Text of page 1
+    Page 2: Text of page 2
+    And so on
+    ''')
             
         print (f"story  {story}")
         pages_text = storyTextSplit(story) 
-        steps  =imageQuality[quality_images].value 
-        # prompts = []   
-        # for j in range(numPages):
-        #     inputText = f'make an image ai promt for children story according to this text {pages_text[i]}'
-        #     prompts.append(t.makeTextAI(inputText))
         
-        # images_urls = imageAIMaker.make_mutiple_ai_images(prompts , steps , height_images , width_images , staticNumIdPic)
-
+        #no rellevant: move from  stable diffusion to gemini
+        #steps  =imageQuality[quality_images].value 
         
-
+        
+        #save value of the first image to base the rest of the images on that
+        url_first_image =''
         for i in range(numPages):
 
-            inputText = f'make an image ai promt for children story according to this text not longer then 15 words {pages_text[i]}'
+            inputText = f'make an image prompt for children story according to this text not longer then 15 words {pages_text[i]}'
             inputText = t.makeTextAI(inputText)
-            while (len(inputText )>100):
-                inputText = f'make an image ai promt for children story according to this text not longer then 15 words {pages_text[i]}'
+            while (len(inputText )>50):
+                inputText = f'make an image ai prompt for children story according to this text not longer then 15 words {pages_text[i]}'
                 inputText = t.makeTextAI(inputText)
-            pathImage = imageAIMaker.makeImageAI(inputText , steps , height_images  , width_images , staticNumIdPic)
-            staticNumIdPic+=1
-            voice_file_url =None
+            pathImage = None
+            if i==0:
+                pathImage = imageAIMaker.makeImageAI(inputText)
+                url_first_image = str(pathImage)
+            else:
+                pathImage = imageAIMaker.makeImageFromImage(inputText ,url_first_image)
+            #no rellevant: move from  stable diffusion to gemini
+            #pathImage = imageAIMaker.makeImageAI(inputText , steps , height_images  , width_images , staticNumIdPic)
+            #staticNumIdPic+=1
+            voice_file_url = None
             if make_voice:
                 voice_file_url = newVoiceFile(pages_text[i],f"{title}_page{i}_voice")
             self.pages.append(page(pages_text[i] , pathImage,voice_file_url)) 
 
+        
+    
     def to_dict(self):
         print(f"to_dict called: num pages = {len(self.pages)}")  
 
@@ -107,18 +182,8 @@ And so on
     def change_page_text(self, num_page,  new_text):
         self.pages[num_page].set_text_page(new_text)
     
-    def change_page_text_ai(self, num_page , description):
-        old_text = self.pages[num_page].get_text_page()
-        extra_promt = " , just print the answer"
-        promt = f"improve the old text: {old_text} description = {description}"
-        self.pages[num_page].set_text_page()
-    
-# 
-# story object: a python dict where every object has text and url to photo
- 
-# example:
 
-#TODO: make python dic example 
+    
 
 
 class Continued_story(Story):
@@ -157,25 +222,30 @@ class Continued_story(Story):
         print (f"story  = {story}")
         pages_text = storyTextSplit(story)    
         
-        #part 3 make the current story pages (text and img url)
+ 
+        #save value of the first image to base the rest of the images on that
+        url_first_image =''
         for i in range(numPages):
 
-            steps  =imageQuality[quality_images].value 
-
-            inputText = f'make an image ai promt for children story according to this text {pages_text[i]}'
+            inputText = f'make an image prompt for children story according to this text not longer then 15 words {pages_text[i]}'
             inputText = t.makeTextAI(inputText)
-            url_image = ''
-            if i < len(previous_book_pages):
-                url_image  = previous_book_pages[i]["img_url"]
+            while (len(inputText )>50):
+                inputText = f'make an image ai prompt for children story according to this text not longer then 15 words {pages_text[i]}'
+                inputText = t.makeTextAI(inputText)
+            pathImage = None
+            if i==0:
+                pathImage = imageAIMaker.makeImageAI(inputText)
+                url_first_image = str(pathImage)
             else:
-                page_number = randint(0,len(previous_book_pages)-1)
-                url_image  = previous_book_pages[page_number]["img_url"]
-            pathImage = imageAIMaker.makeImageFromImage(inputText , steps , height_images  , width_images , staticNumIdPic, url_image)
-            staticNumIdPic+=1
-            voice_file_url =None
+                pathImage = imageAIMaker.makeImageFromImage(inputText ,url_first_image)
+            #no rellevant: move from  stable diffusion to gemini
+            #pathImage = imageAIMaker.makeImageAI(inputText , steps , height_images  , width_images , staticNumIdPic)
+            #staticNumIdPic+=1
+            voice_file_url = None
             if make_voice:
                 voice_file_url = newVoiceFile(pages_text[i],f"{title}_page{i}_voice")
             self.pages.append(page(pages_text[i] , pathImage,voice_file_url)) 
+
 
 
 
