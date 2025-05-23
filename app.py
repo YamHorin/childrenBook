@@ -22,7 +22,7 @@ def create_new_AI_image_from_image():
     staticNumIdPic+=1
     data = request.get_json()  # Get JSON data from the request body
     if not data:
-        ex.exception_no_json()
+        return ex.exception_no_json()
     
     try:
         textPage = str(data["Text"])
@@ -32,7 +32,7 @@ def create_new_AI_image_from_image():
         return jsonify({"link":pathImage}), 200  # Handle missing JSON
 
     except KeyError as e:
-        ex.exception_json_value(e)
+        return ex.exception_json_value(e)
 
 @app.route('/MagicOfStory/ImageAI',methods=['POST'] )    
 def create_AI_Image_story_text():
@@ -40,42 +40,33 @@ def create_AI_Image_story_text():
     staticNumIdPic+=1
     data = request.get_json()  # Get JSON data from the request body
     if not data:
-        ex.exception_no_json()
+        return ex.exception_no_json()
     
     try:
         textPage = str(data["Text"])
-        # numPage = int(data["num"])
-        # #defulte values for the image
-        # height  = 1080
-        # width  = 720
-        # steps  =imageQuality["HIGH"].value 
-
-        #step 1 get a promt to the image generator
         promptPhoto  = makeTextAI("please give me a promt for the AI image generator for this children story text:"+textPage+" try to pay attention to details of the photo")
-        #step 2 making the photo 
         pathImage = imageAIMaker.makeImageAI(promptPhoto)
-        #step 3 sending the file 
         print("send the file to the user")
         return jsonify({"link":pathImage}), 200  # Handle missing JSON
 
     except KeyError as e:
-        ex.exception_json_value(e)
+        return ex.exception_json_value(e)
 @app.route('/MagicOfStory/Text',methods=['POST'] )    
 def create_new_AI_text():
     data = request.get_json()  # Get JSON data from the request body
     if not data:
-        ex.exception_no_json()
+        return ex.exception_no_json()
     try:
         promt = data.get('input')
         return jsonify({"respond" : makeTextAI(promt)})
     except KeyError as e:
-        ex.exception_json_value(e)
+        return ex.exception_json_value(e)
 @app.route('/MagicOfStory/Story',methods=['POST'])
 def create_new_story():
     global staticNumIdPic
     data = request.get_json()  # Get JSON data from the request body
     if not data:
-        ex.exception_no_json()
+        return ex.exception_no_json()
     try:
         subject = str(data["subject"])
         numPages = int(data["numPages"])
@@ -87,7 +78,7 @@ def create_new_story():
         pages_texts_list = list(data.get("story_pages",[]))
 
     except KeyError as e:
-        ex.exception_json_value(e)
+        return ex.exception_json_value(e)
 
     story_obj = child.Story(subject , numPages, auther , description,title, pages_texts_list , enable_voice)
     return jsonify(story_obj.to_dict())
@@ -97,7 +88,7 @@ def create_new_story_sequel():
     global staticNumIdPic
     data = request.get_json()  # Get JSON data from the request body
     if not data:
-        ex.exception_no_json()
+        return ex.exception_no_json()
     try:
         numPages = int(data["numPages"])
         auther = str(data["auther"])
@@ -113,7 +104,7 @@ def create_new_story_sequel():
 
 
     except KeyError as e:
-        ex.exception_json_value(e)
+        return ex.exception_json_value(e)
 @app.route('/MagicOfStory/voice',methods=['POST']) 
 def make_new_text_to_speach():
     data = request.get_json()  # Get JSON data from the request body
@@ -132,7 +123,7 @@ def make_new_text_to_speach():
 def make_new_images_base_on_story():
     data = request.get_json()  # Get JSON data from the request body
     if not data:
-        return "No JSON data provided", 400  # Handle missing JSON
+        return ex.exception_no_json()
     try:
         textPage = str(data["Text"])
         numPages = int(data["num_pages"])
@@ -151,7 +142,8 @@ def make_new_images_base_on_story():
 
 
     except KeyError as e:
-        ex.exception_json_value(e)
+        return ex.exception_json_value(e)
+
 if __name__ == "__main__":
     initialize_app()
     app.run(debug=True , port=5000 , host="0.0.0.0")
