@@ -12,7 +12,7 @@ commands.txt
 /.vscode/
 *.png
 /.vscode/
-
+/private/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

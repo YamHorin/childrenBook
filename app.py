@@ -94,14 +94,15 @@ def create_new_story():
         description = str(data["description"])
         title = str(data["title"])
         enable_voice = bool(data["text_to_voice"])
-        story_obj = child.Story(subject,numPages,auther,description,title ,staticNumIdPic ,make_voice=enable_voice)
-        staticNumIdPic+=numPages
-        return jsonify(story_obj.to_dict())
+        #optional value , don't raise exception
+        pages_texts_list = list(data.get("story_pages",[]))
 
+    #TODO: make an exception function to not rerpeast code
+    except KeyError as e:
+        return jsonify({"error": f"Missing required field: {str(e)}"}), 400  # Handle missing JSON
 
-    except KeyError:
-        return jsonify({"error": "one the values in the JSON is missing"}), 400  # Handle missing JSON
-
+    story_obj = child.Story(subject , numPages, auther , description,title, pages_texts_list , enable_voice)
+    return jsonify(story_obj.to_dict())
 
 @app.route('/MagicOfStory/Story/Sequel',methods=['POST'])
 def create_new_story_sequel():

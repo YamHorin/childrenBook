@@ -13,3 +13,4 @@ bitsandbytes
 python-dotenv
 gtts
 firebase_admin
+google-genai>=1.0.0

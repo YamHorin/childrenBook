@@ -187,9 +187,9 @@ class Story():
 
 
 class Continued_story(Story):
-    def __init__(self,numPages, auther, description, title, staticNumIdPic 
+    def __init__(self,numPages, auther, description, title
                  ,previous_book_pages  ,previous_book_title
-                 ,height_images=1080, width_images=1080, quality_images='MEDIUM', make_voice=True ):
+                , make_voice=True ):
         #part 1 finds out what the previous story was
         previous_book_story = previous_book_title +"\n"
         for page_bool_previous in previous_book_pages:
