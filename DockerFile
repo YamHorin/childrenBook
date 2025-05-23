@@ -11,7 +11,7 @@ RUN pip install requests
 RUN pip install -U google-generativeai
 RUN pip install hf_xet
 RUN pip install diffusers transformers accelerate
-
+RUN pip install -q -U "google-genai>=1.0.0"
 # Copy application files into the container
 COPY . .
 
