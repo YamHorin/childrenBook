@@ -31,12 +31,33 @@ python app.py
 json photo: 
 {
     "inputText" :"a boy goes to school , cartoon style ",
-    "height" :1080,
-    "width" :1080,
-    "quality" :"LOW"
+
 }
 
-json story: 
+json story media (function1)
+
+{
+"subject":"cats and dogs",
+"numPages":"3",
+"auther":"Yam Horin",
+"description":"a cute story about how dogs and cats can become friends",
+"title":"cats and dogs",
+"text_to_voice":true
+"story_pages" : [
+    "Once upon a time, in a quiet forest, there lived a curious fox named Felix.",
+    "Felix loved to explore the woods and discover new things every day.",
+    "One morning, he stumbled upon a shiny key hidden beneath a pile of leaves.",
+    "Excited, Felix wondered what the key could unlock, and he set off on a quest to find out.",
+    "He asked the wise old owl, who told him of a hidden treasure deep in the forest.",
+    "Felix followed clues carved into trees and hidden under rocks.",
+]
+
+
+}
+
+
+
+json story AI (function2): 
 {
 
 "subject":"cats and dogs",
@@ -74,7 +95,7 @@ json return
 }
 
 
-json sequel story :
+json sequel story (function3):
 
 
 {
@@ -105,6 +126,8 @@ json sequel story :
 "title_previous":"cats and dogs"
 
 }
+
+
 
 
 ```
