@@ -6,6 +6,7 @@ import imageAIMaker
 import voiceMaker
 from memoryManager import initialize_app
 import exceptionHandler as ex
+from google.api_core.exceptions import ResourceExhausted
 app = Flask(__name__)
 
 staticNumIdPic =0
@@ -28,11 +29,15 @@ def create_new_AI_image_from_image():
         textPage = str(data["Text"])
         url_image = str(data["url_image"])
         pathImage = imageAIMaker.makeImageFromImage(textPage , url_image)
-        print("send the file to the user")
+        print(f"send the file to the user")
         return jsonify({"link":pathImage}), 200  # Handle missing JSON
 
     except KeyError as e:
         return ex.exception_json_value(e)
+    except ResourceExhausted as e:
+        return ex.exception_ResourceExhausted(e)
+    except Exception as e:
+        return ex.exception_internal_server_issue(e)
 
 @app.route('/MagicOfStory/ImageAI',methods=['POST'] )    
 def create_AI_Image_story_text():
@@ -51,6 +56,10 @@ def create_AI_Image_story_text():
 
     except KeyError as e:
         return ex.exception_json_value(e)
+    except ResourceExhausted as e:
+        return ex.exception_ResourceExhausted(e)
+    except Exception as e:
+        return ex.exception_internal_server_issue(e)
 @app.route('/MagicOfStory/Text',methods=['POST'] )    
 def create_new_AI_text():
     data = request.get_json()  # Get JSON data from the request body
@@ -61,6 +70,11 @@ def create_new_AI_text():
         return jsonify({"respond" : makeTextAI(promt)})
     except KeyError as e:
         return ex.exception_json_value(e)
+    except ResourceExhausted as e:
+        return ex.exception_ResourceExhausted(e)
+    except Exception as e:
+        return ex.exception_internal_server_issue(e)
+
 @app.route('/MagicOfStory/Story',methods=['POST'])
 def create_new_story():
     global staticNumIdPic
@@ -81,6 +95,10 @@ def create_new_story():
 
     except KeyError as e:
         return ex.exception_json_value(e)
+    except ResourceExhausted as e:
+        return ex.exception_ResourceExhausted(e)
+    except Exception as e:
+        return ex.exception_internal_server_issue(e)
     
 
 
@@ -106,6 +124,10 @@ def create_new_story_sequel():
 
     except KeyError as e:
         return ex.exception_json_value(e)
+    except ResourceExhausted as e:
+        return ex.exception_ResourceExhausted(e)
+    except Exception as e:
+        return ex.exception_internal_server_issue(e)
 @app.route('/MagicOfStory/voice',methods=['POST']) 
 def make_new_text_to_speach():
     data = request.get_json()  # Get JSON data from the request body
@@ -144,6 +166,10 @@ def make_new_images_base_on_story():
 
     except KeyError as e:
         return ex.exception_json_value(e)
+    except ResourceExhausted as e:
+        return ex.exception_ResourceExhausted(e)
+    except Exception as e:
+        return ex.exception_internal_server_issue(e)
 
 if __name__ == "__main__":
     initialize_app()
