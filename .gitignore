@@ -18,6 +18,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+/images/
+/voices/
 google.py
 # C extensions
 *.so
