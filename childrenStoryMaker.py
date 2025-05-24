@@ -53,10 +53,12 @@ class Story():
         make_voice: bool):
         
         # no text inclued = complete AI story
-        if pages_texts_list is None:
-           (self.numPages,self.description,self.auther,self.pages,self.title) = self.AI_story_maker(subject,numPages,auther,description,title,make_voice)
-        elif pages_texts_list is list:
-            (self.numPages,self.description,self.auther,self.title,self.pages) = self.story_media_maker(subject,numPages,auther,description,title,make_voice,pages_texts_list)
+        if len(pages_texts_list)==0:
+           self.AI_story_maker(subject,numPages,auther,description,title,make_voice)
+        #pages= story from the user 
+        else:
+            print("making a new story , pages has been have by the user.")
+            self.story_media_maker(subject,numPages,auther,description,title,make_voice,pages_texts_list)
         print("story has been complete \n\n")
 
     def story_media_maker(
@@ -86,14 +88,15 @@ class Story():
 
             inputText = f'make an image prompt for children story according to this text not longer then 15 words {pages_texts_list[i]} , the subject of the story :{subject}'
             inputText = t.makeTextAI(inputText)
-            while (len(inputText )>50):
-                inputText = f'make an image ai prompt for children story according to this text not longer then 15 words {pages_texts_list[i]} , the subject of the story :{subject}'
-                inputText = t.makeTextAI(inputText)
+            print(f"\n\n input prompt for image {i} in the story : {inputText}\n\n")
             pathImage = None
             if i==0:
+                #pathImage = f"{title}_page{i}_pic"
                 pathImage = imageAIMaker.makeImageAI(inputText)
                 url_first_image = str(pathImage)
             else:
+                
+                #pathImage = f"{title}_page{i}_pic"
                 pathImage = imageAIMaker.makeImageFromImage(inputText ,url_first_image)
             #no rellevant: move from  stable diffusion to gemini
             #pathImage = imageAIMaker.makeImageAI(inputText , steps , height_images  , width_images , staticNumIdPic)
@@ -147,9 +150,6 @@ class Story():
 
             inputText = f'make an image prompt for children story according to this text not longer then 15 words {pages_text[i]}'
             inputText = t.makeTextAI(inputText)
-            while (len(inputText )>50):
-                inputText = f'make an image ai prompt for children story according to this text not longer then 15 words {pages_text[i]}'
-                inputText = t.makeTextAI(inputText)
             pathImage = None
             if i==0:
                 pathImage = imageAIMaker.makeImageAI(inputText)

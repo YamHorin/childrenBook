@@ -5,4 +5,4 @@ def exception_json_value(exception):
 def exception_no_json():
     return jsonify({"error": "No JSON data provided"}), 400 
 def exception_internal_server_issue(exception):
-    return jsonify({"error of the server": f"server crash: {exception}"}), 500 
+    return jsonify({f"error of the server": "server crash: {exception}"}), 500 

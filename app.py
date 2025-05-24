@@ -76,12 +76,13 @@ def create_new_story():
         enable_voice = bool(data["text_to_voice"])
         #optional value , don't raise exception
         pages_texts_list = list(data.get("story_pages",[]))
+        story_obj = child.Story(subject , numPages, auther , description,title, pages_texts_list , enable_voice)
+        return jsonify(story_obj.to_dict())
 
     except KeyError as e:
         return ex.exception_json_value(e)
+    
 
-    story_obj = child.Story(subject , numPages, auther , description,title, pages_texts_list , enable_voice)
-    return jsonify(story_obj.to_dict())
 
 @app.route('/MagicOfStory/Story/Sequel',methods=['POST'])
 def create_new_story_sequel():
