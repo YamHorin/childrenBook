@@ -7,6 +7,7 @@ import voiceMaker
 from memoryManager import initialize_app
 import exceptionHandler as ex
 from google.api_core.exceptions import ResourceExhausted
+
 app = Flask(__name__)
 
 staticNumIdPic =0
@@ -19,8 +20,6 @@ def test():
 
 @app.route('/MagicOfStory/ImageFromImage',methods=['POST'] )
 def create_new_AI_image_from_image():
-    global staticNumIdPic
-    staticNumIdPic+=1
     data = request.get_json()  # Get JSON data from the request body
     if not data:
         return ex.exception_no_json()
@@ -138,31 +137,6 @@ def make_new_text_to_speach():
         story = str(data["story_title"])
         url_file  = voiceMaker.newVoiceFile(text , f"{story}.mp3")
         return jsonify({"url": url_file})
-
-
-    except KeyError as e:
-        ex.exception_json_value(e)
-@app.route('/MagicOfStory/ImagesToStory',methods=['POST']) 
-def make_new_images_base_on_story():
-    data = request.get_json()  # Get JSON data from the request body
-    if not data:
-        return ex.exception_no_json()
-    try:
-        textPage = str(data["Text"])
-        numPages = int(data["num_pages"])
-        #defulte values for the image
-        height  = 1080
-        width  = 720
-        steps  =imageQuality["HIGH"].value 
-
-        #step 1 get a promt to the image generator
-        promptPhoto  = makeTextAI("please give me a promt for the AI image generator for this children story text:"+textPage+" try to pay attention to details of the photo , no explaining just send the prompt")
-        #step 2 making the photo 
-        pathImage = imageAIMaker.makeImageAI(promptPhoto , steps , height  , width , staticNumIdPic)
-        #step 3 sending the file 
-        print("send the file to the user")
-        return jsonify({"link":pathImage}), 200  # Handle missing JSON
-
 
     except KeyError as e:
         return ex.exception_json_value(e)
