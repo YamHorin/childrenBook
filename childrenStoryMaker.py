@@ -84,9 +84,16 @@ class Story():
         #steps  =imageQuality[quality_images].value 
         #save value of the first image to base the rest of the images on that
         url_first_image =''
+        images_prompts =[]
         for i in range(numPages):
 
-            inputText = f'make an image prompt for children story according to this text not longer then 15 words {pages_texts_list[i]} , the subject of the story :{subject}'
+            inputText = f'make an image prompt for children story according to this text not longer then 15 words {pages_texts_list[i]} , the subject of the story :{subject} '
+            if (i>0):
+                previous_story_pages = ' '.join([prompt for prompt in images_prompts])
+                inputText += f'\n making sure to maintain consistent visual elements such as [clothing, colors, background, art style, recurring objects]. The image should reflect a coherent world and preserve recurring elements seen in previous images. Focus on [relevant features , e.g., expression, background setting, lighting]. \n here is the previous story pages images prompts for refrence: {previous_story_pages}'
+            
+            print(inputText)
+
             inputText = t.makeTextAI(inputText)
             print(f"\n\n input prompt for image {i} in the story : {inputText}\n\n")
             pathImage = None
@@ -98,6 +105,9 @@ class Story():
                 
                 #pathImage = f"{title}_page{i}_pic"
                 pathImage = imageAIMaker.makeImageFromImage(inputText ,url_first_image)
+            
+            images_prompts.append(inputText)
+
             #no rellevant: move from  stable diffusion to gemini
             #pathImage = imageAIMaker.makeImageAI(inputText , steps , height_images  , width_images , staticNumIdPic)
             #staticNumIdPic+=1

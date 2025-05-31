@@ -97,6 +97,7 @@ def create_new_story():
     except ResourceExhausted as e:
         return ex.exception_ResourceExhausted(e)
     except Exception as e:
+        print(e.__annotations__)
         return ex.exception_internal_server_issue(e)
     
 
