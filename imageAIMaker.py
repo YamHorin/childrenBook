@@ -75,31 +75,31 @@ def makeImageAI(promt):
         return None
 
 # # #version 1 Stable Diffusion not Rellvant
-# def makeImageFromImage(prompt, steps, height, width, idPictuere , url_image_source):
-#     pipeline = AutoPipelineForImage2Image.from_pretrained(
-#     "stabilityai/stable-diffusion-xl-refiner-1.0", torch_dtype=torch.float16, variant="fp16", use_safetensors=True
-#     )
-#     pipeline.enable_model_cpu_offload()
+def makeImageFromImage(prompt, steps, height, width, idPictuere , url_image_source):
+    pipeline = AutoPipelineForImage2Image.from_pretrained(
+    "stabilityai/stable-diffusion-xl-refiner-1.0", torch_dtype=torch.float16, variant="fp16", use_safetensors=True
+    )
+    pipeline.enable_model_cpu_offload()
 
-#     # Load image from URL
-#     response = requests.get(url_image_source)
-#     response.raise_for_status()  # Raise an error for bad responses
-#     init_image = Image.open(BytesIO(response.content)).convert("RGB")
+    # Load image from URL
+    response = requests.get(url_image_source)
+    response.raise_for_status()  # Raise an error for bad responses
+    init_image = Image.open(BytesIO(response.content)).convert("RGB")
 
 
     
-#     # pass prompt and image to pipeline
-#     image = pipeline(prompt, 
-#                     image=init_image,
-#                     height = height,
-#                     width = width, 
-#                     strength=0.7).images[0] ## More creative divergence from source
-#     print("making image complete ")
-#     fileName  = f'image {idPictuere}.png'
-#     image = image.filter(ImageFilter.DETAIL)
-#     image.save(fileName)
-#     print(f"image saved as {fileName}")
-#     return memoryManager.save_file(fileName ,fileType.png)
+    # pass prompt and image to pipeline
+    image = pipeline(prompt, 
+                    image=init_image,
+                    height = height,
+                    width = width, 
+                    strength=0.7).images[0] ## More creative divergence from source
+    print("making image complete ")
+    fileName  = f'image {idPictuere}.png'
+    image = image.filter(ImageFilter.DETAIL)
+    image.save(fileName)
+    print(f"image saved as {fileName}")
+    return memoryManager.save_file(fileName ,fileType.png)
 
 #version 2 google gemini
 
